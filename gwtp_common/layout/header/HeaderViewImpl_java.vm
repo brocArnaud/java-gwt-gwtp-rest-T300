@@ -46,6 +46,7 @@ public class HeaderViewImpl extends ViewImpl implements HeaderView {
 	}
 
 #foreach( $entity in $selectedEntities )
+#if ($foreach.index <= 8)
 #set( $upperCaseEntityName = $fn.toUpperCase($entity.name))
 #set( $uncapitalizedEntityName = $fn.uncapitalize($entity.name) )
 	@UiHandler(value = "${uncapitalizedEntityName}")
@@ -53,6 +54,7 @@ public class HeaderViewImpl extends ViewImpl implements HeaderView {
 		collapse.hide();
 		presenter.on${entity.name}Click();
 	}
+#end
 #end
 
 	@Override

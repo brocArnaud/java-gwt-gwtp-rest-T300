@@ -4,16 +4,34 @@
 	<g:HTMLPanel ui:field="container">
 		<b:Navbar position="FIXED_BOTTOM" addStyleNames="{res.style.footerBar}">
 			<b:Container>
-				<b:NavbarText pull="RIGHT">
-					<b.html:Span>
-						<g:InlineLabel text="Powered by Telosys 3 -">
-							<ui:attribute name='text' key="layout.powered.by" />
-						</g:InlineLabel>
-						<b:NavbarLink text="Visit our site for more information" href="https://github.com/telosys-tools-bricks">
-							<ui:attribute name='text' key="layout.telosys.link" />
-						</b:NavbarLink>
-					</b.html:Span>
-				</b:NavbarText>
+				<b:Row>
+					<b:Column size="MD_6">
+						<b:NavbarNav>
+#foreach( $entity in $selectedEntities )
+#if ($foreach.index > 8)
+#set( $upperCaseEntityName = $fn.toUpperCase($entity.name))
+#set( $uncapitalizedEntityName = $fn.uncapitalize($entity.name) )
+	<b:AnchorListItem ui:field="${uncapitalizedEntityName}" text="${entity.name}">
+		<ui:attribute name='text' key="layout.${uncapitalizedEntityName}" />
+	</b:AnchorListItem>
+#end
+#end
+					
+						</b:NavbarNav>
+					</b:Column>
+					<b:Column size="MD_6">
+						<b:NavbarText pull="RIGHT">
+							<b.html:Span>
+								<g:InlineLabel text="Powered by Telosys 3 -">
+									<ui:attribute name='text' key="layout.powered.by" />
+								</g:InlineLabel>
+								<b:NavbarLink text="Visit our site for more information" href="https://github.com/telosys-tools-bricks">
+									<ui:attribute name='text' key="layout.telosys.link" />
+								</b:NavbarLink>
+							</b.html:Span>
+						</b:NavbarText>
+					</b:Column>
+				</b:Row>
 			</b:Container>
 		</b:Navbar>
 	</g:HTMLPanel>

@@ -10,9 +10,18 @@
 #set( $listRootName = "${upperCaseEntityName}_LIST" )
 ## Package declaration
 package ${target.javaPackageFromFolder(${SRC})};
+## Determine if linked object are present at least one for adjust import
+#set( $attleastOne = false)
+#foreach( $field in ${entity.attributes} )
+#if($field.isFK())
+#set( $attleastOne = true)
+#end
+#end
 
+#if($attleastOne)
 import java.util.List;
 import java.util.stream.Collectors;
+#end
 
 import javax.inject.Inject;
 
@@ -21,7 +30,8 @@ import org.gwtbootstrap3.client.ui.*;
 #set( $haveDateField = false)
 #foreach( $field in ${entity.attributes} )
 #if(!$field.isFK())
-#if($field.fullType == 'java.util.Date')
+#if($field.fullType == 'java.util.Date' && !$haveDateField)
+#set( $haveDateField = true)
 import org.gwtbootstrap3.extras.datepicker.client.ui.DatePicker;
 #end
 #end
@@ -33,7 +43,9 @@ import com.google.gwt.user.client.ui.Widget;
 import ${ROOT_PKG}.client.application.content.${lowerCaseEntityName}.form.${entity.name}FormPresenter.${entity.name}FormView;
 import ${ROOT_PKG}.client.util.common.form.view.AbstractFormView;
 import ${ROOT_PKG}.shared.dto.${entity.name}Dto;
+#if($attleastOne)
 import ${ROOT_PKG}.shared.dto.common.ListItemDto;
+#end
 
 import de.knightsoftnet.validators.client.editor.BeanValidationEditorDriver;
 

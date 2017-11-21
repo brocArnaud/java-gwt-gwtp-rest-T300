@@ -20,7 +20,6 @@ public class FooterViewImpl extends ViewImpl implements FooterView {
 	interface Binder extends UiBinder<Widget, FooterViewImpl> {
 	}
 
-	@SuppressWarnings("unused")
 	private FooterPresenter presenter;
 
 	@UiField
@@ -36,5 +35,16 @@ public class FooterViewImpl extends ViewImpl implements FooterView {
 	public void setPresenter(FooterPresenter presenter) {
 		this.presenter = presenter;
 	}
+
+#foreach( $entity in $selectedEntities )
+#if ($foreach.index > 8)
+#set( $upperCaseEntityName = $fn.toUpperCase($entity.name))
+#set( $uncapitalizedEntityName = $fn.uncapitalize($entity.name) )
+	@UiHandler(value = "${uncapitalizedEntityName}")
+	public void on${entity.name}Click(ClickEvent event) {
+		presenter.on${entity.name}Click();
+	}
+#end
+#end
 
 }

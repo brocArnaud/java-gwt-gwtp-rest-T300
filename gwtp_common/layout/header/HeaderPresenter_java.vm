@@ -51,10 +51,12 @@ public class HeaderPresenter extends BasePresenter<HeaderView, HeaderProxy> impl
 	}
 
 #foreach( $entity in $selectedEntities )
+#if ($foreach.index <= 8)
 #set( $upperCaseEntityName = $fn.toUpperCase($entity.name))
 #set( $listRootName = "${upperCaseEntityName}_LIST" )
 	public void on${entity.name}Click() {
 		revealPlace(NameTokens.$listRootName);
 	}
+#end
 #end
 }

@@ -10,8 +10,17 @@
 #set( $listRootName = "${upperCaseEntityName}_LIST" )
 ## Package declaration
 package ${target.javaPackageFromFolder(${SRC})};
+## Determine if linked object are present at least one for adjust import
+#set( $attleastOne = false)
+#foreach( $field in ${entity.attributes} )
+#if($field.isFK())
+#set( $attleastOne = true)
+#end
+#end
 
+#if($attleastOne)
 import java.util.List;
+#end
 
 import ${ROOT_PKG}.client.application.ApplicationPresenter;
 import ${ROOT_PKG}.client.application.content.${lowerCaseEntityName}.form.${entity.name}FormPresenter.${entity.name}FormProxy;
@@ -23,15 +32,15 @@ import ${ROOT_PKG}.client.util.common.form.presenter.AbstractFormPresenter;
 import ${ROOT_PKG}.client.util.common.form.view.FormView;
 import ${ROOT_PKG}.shared.api.resources.${entity.name}Resource;
 ## For each Value list (selected links), make needed import
-#set( $attleastOne = false)
 #foreach( $field in ${entity.attributes} )
 #if($field.isFK())
-#set( $attleastOne = true)
 import ${ROOT_PKG}.shared.api.resources.${field.referencedEntityName}Resource;
 #end
 #end
 import ${ROOT_PKG}.shared.dto.${entity.name}Dto;
+#if($attleastOne)
 import ${ROOT_PKG}.shared.dto.common.ListItemDto;
+#end
 
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -63,8 +72,8 @@ public class ${entity.name}FormPresenter extends AbstractFormPresenter<${entity.
 #foreach( $field in ${entity.attributes} )
 #if($field.isFK())
 #set( $uncapitalizedTargetEntity = $fn.uncapitalize(${field.referencedEntityName}))
-		@Inject
-		ResourceDelegate<${field.referencedEntityName}Resource> ${uncapitalizedTargetEntity}Service;
+	@Inject
+	ResourceDelegate<${field.referencedEntityName}Resource> ${uncapitalizedTargetEntity}Service;
 #end
 #end
 
@@ -74,6 +83,7 @@ public class ${entity.name}FormPresenter extends AbstractFormPresenter<${entity.
 		getView().setPresenter(this);
 	}
 
+#if( $attleastOne )
 	@Override
 	public void onReveal() {
 		super.onReveal();
@@ -82,15 +92,17 @@ public class ${entity.name}FormPresenter extends AbstractFormPresenter<${entity.
 #if($field.isFK())
 #set( $targetEntity = "${field.referencedEntityName}")
 #set( $uncapitalizedTargetEntity = $fn.uncapitalize(${targetEntity}))
-	${uncapitalizedTargetEntity}Service.withCallback(new CallBack<List<ListItemDto>>() {
-		@Override
-		public void onSuccess(List<ListItemDto> items) {
-			getView().load${targetEntity}(items);
-		}
-	}).listItems();
+		${uncapitalizedTargetEntity}Service.withCallback(new CallBack<List<ListItemDto>>() {
+			@Override
+			public void onSuccess(List<ListItemDto> items) {
+				getView().load${targetEntity}(items);
+			}
+		}).listItems();
 #end
 #end
+		load();
 	}
+#end
 
 	@Override
 	public String getListRouteToken() {
@@ -104,10 +116,10 @@ public class ${entity.name}FormPresenter extends AbstractFormPresenter<${entity.
 #if( $field.isKeyElement())
 #set( $upperCaseFkName = $fn.toUpperCase($field.name))
 #set( $capitalizedFieldName = $fn.capitalize($field.name))
-	#set($restCallparams="${restCallparams}data.get${capitalizedFieldName}()") 
-	#if($foreach.index != ${entity.keyAttributesCount}- 1)
-		#set($restCallparams="${restCallparams}, ") 
-	#end
+#set($restCallparams="${restCallparams}data.get${capitalizedFieldName}()") 
+#if($foreach.index != ${entity.keyAttributesCount}- 1)
+#set($restCallparams="${restCallparams}, ") 
+#end
 #end
 #end
 		LoadingEvent.fire(this, true);
@@ -145,14 +157,14 @@ public class ${entity.name}FormPresenter extends AbstractFormPresenter<${entity.
 #else
 #set($restrictedType= ${field.fullType}) 
 #end
-	#if($field.isStringType())
-		#set($restCallparams="${restCallparams}${uncapitalizedFieldName}") 
-	#else
-		#set($restCallparams="${restCallparams} ${restrictedType}.valueOf(${uncapitalizedFieldName})")
-	#end
-	#if($foreach.index != ${entity.keyAttributesCount}- 1)
-		#set($restCallparams="${restCallparams}, ") 
-	#end
+#if($field.isStringType())
+#set($restCallparams="${restCallparams}${uncapitalizedFieldName}") 
+#else
+#set($restCallparams="${restCallparams} ${restrictedType}.valueOf(${uncapitalizedFieldName})")
+#end
+#if($foreach.index != ${entity.keyAttributesCount}- 1)
+#set($restCallparams="${restCallparams}, ") 
+#end
 #end
 #end
 		updateMode = !${uncapitalizedFieldName}.equals(TokenParameters.DEFAULT_ID);

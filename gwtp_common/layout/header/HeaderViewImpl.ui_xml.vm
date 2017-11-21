@@ -15,11 +15,13 @@
 						<b:NavbarCollapse b:id="navbar-collapse" ui:field="collapse">
 							<b:NavbarNav>
 #foreach( $entity in $selectedEntities )
+#if ($foreach.index <= 8)
 #set( $upperCaseEntityName = $fn.toUpperCase($entity.name))
 #set( $uncapitalizedEntityName = $fn.uncapitalize($entity.name) )
 	<b:AnchorListItem ui:field="${uncapitalizedEntityName}" text="${entity.name}">
 		<ui:attribute name='text' key="layout.${uncapitalizedEntityName}" />
 	</b:AnchorListItem>
+#end
 #end
 							</b:NavbarNav>
 						</b:NavbarCollapse>

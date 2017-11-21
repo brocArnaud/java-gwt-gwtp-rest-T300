@@ -32,4 +32,14 @@ public class FooterPresenter extends BasePresenter<FooterView, FooterProxy> {
 		getView().setPresenter(this);
 	}
 
+#foreach( $entity in $selectedEntities )
+#if ($foreach.index > 8)
+#set( $upperCaseEntityName = $fn.toUpperCase($entity.name))
+#set( $listRootName = "${upperCaseEntityName}_LIST" )
+	public void on${entity.name}Click() {
+		revealPlace(NameTokens.$listRootName);
+	}
+#end
+#end
+
 }

@@ -7,9 +7,13 @@ $env.setEntityClassNameSuffix("Dto")
 
 import java.io.Serializable;
 import javax.validation.constraints.*;
-
-#foreach( $import in $java.imports($entity.attributes) )
-import $import;
+#set( $dateAlreadyImported = false)
+#foreach( $field in $entity.attributes )
+#if(${field.wrapperType} == 'Date' && !$dateAlreadyImported)
+#set( $dateAlreadyImported = true)
+import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+#end
 #end
 
 /**
@@ -27,6 +31,9 @@ $beanValidation.annotationsForWrapperType(4,$field)
     private Integer $field.name ;
 #elseif(${field.wrapperType} == 'Float' || ${field.wrapperType} == 'BigDecimal')
     private Double $field.name ;
+#elseif(${field.wrapperType} == 'Date')
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private Date $field.name ;
 #else
     private $field.wrapperType $field.name ;
 #end
@@ -38,6 +45,9 @@ $beanValidation.annotationsForWrapperType(4,$field)
     private Integer $field.name ;
 #elseif(${field.wrapperType} == 'Float' || ${field.wrapperType} == 'BigDecimal')
     private Double $field.name ;
+#elseif(${field.wrapperType} == 'Date')
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private Date $field.name ;
 #else
     private $field.wrapperType $field.name ;
 #end
