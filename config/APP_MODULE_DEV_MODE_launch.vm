@@ -25,5 +25,5 @@
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.google.gwt.dev.DevMode"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-war &quot;#[[${workspace_loc}]]#\\$fn.get("PROJECT_NAME","to.be.defined")\target&quot; -logLevel TRACE -port 8888 -remoteUI &quot;#[[${gwt_remote_ui_server_port}:${unique_id}]]#&quot; -codeServerPort 9997 ${ROOT_PKG}.appModule ${ROOT_PKG}.appModule"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="$fn.get("PROJECT_NAME","to.be.defined")"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx2048m"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx1024m -Dgwt.persistentunitcache=false"/>
 </launchConfiguration>

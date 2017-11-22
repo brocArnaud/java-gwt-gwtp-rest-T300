@@ -53,7 +53,7 @@ import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
 public class ${entity.name}FormPresenter extends AbstractFormPresenter<${entity.name}FormProxy, ${entity.name}FormView, ${entity.name}Dto, ${entity.name}Resource> {
-
+	// Define contract with the associated view
 	public interface ${entity.name}FormView extends FormView<${entity.name}FormPresenter, ${entity.name}Dto> {
 ## For each Value list (fk), create the view interface for pass the data to the list
 #foreach( $field in ${entity.attributes} )
@@ -63,6 +63,11 @@ public class ${entity.name}FormPresenter extends AbstractFormPresenter<${entity.
 #end
 	}
 
+	/**
+	 * Proxy declaration, define an accessible place of the application.
+	 * @see NameToken for more information about place definition
+	 * @see ProxyPlace for more information about place definition
+	 */
 	@ProxyStandard
 	@NameToken(NameTokens.${formRootName})
 	public interface ${entity.name}FormProxy extends ProxyPlace<${entity.name}FormPresenter> {
@@ -106,7 +111,7 @@ public class ${entity.name}FormPresenter extends AbstractFormPresenter<${entity.
 
 	@Override
 	public String getListRouteToken() {
-		return NameTokens.${formRootName};
+		return NameTokens.${listRootName};
 	}
 
 	@Override

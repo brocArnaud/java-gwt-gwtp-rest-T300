@@ -26,6 +26,14 @@ import ${ROOT_PKG}.client.place.NameTokens;
 import ${ROOT_PKG}.client.util.common.BasePresenter;
 import ${ROOT_PKG}.client.util.common.form.view.FormView;
 
+/**
+ * Abstract class wich contains commons stuff for all form presenter.
+ *
+ * @param <P> the presenter proxy @see {@link Proxy}
+ * @param <V> the associated wiew @see {@link FormView}
+ * @param <F> the entity dto associated with this presenter
+ * @param <R> the resources associated for perform CRUD operation
+ */
 public abstract class AbstractFormPresenter<//
 		P extends Proxy<?>, //
 		V extends FormView<? extends AbstractFormPresenter<P, V, F, R>, F>, //
@@ -33,10 +41,22 @@ public abstract class AbstractFormPresenter<//
 		R> //
 		extends BasePresenter<V, P> implements FormPresenter<F> {
 
+	// Main service for perform CRUD operation
 	@Inject
 	protected ResourceDelegate<R> service;
+	// Define the mode of this presenter
+	// true = update the entity
+	// false = creating an entity
 	protected boolean updateMode = false;
 
+	/**
+	 * Standard constructor.
+	 * @param eventBus the shared event bus
+	 * @param view the associated view
+	 * @param proxy the presenter proxy
+	 * @param pslot slot in wich render the content
+	 * @param placeManager navigation utility
+	 */
 	public AbstractFormPresenter(final EventBus eventBus, final V view, final P proxy, final GwtEvent.Type<RevealContentHandler<?>> pslot, PlaceManager placeManager) {
 		super(eventBus, view, proxy, pslot, placeManager);
 	}
@@ -54,6 +74,9 @@ public abstract class AbstractFormPresenter<//
 		return data;
 	}
 
+	/**
+	 * Basic onReveal(), ensure notification is hide and perform a load action.
+	 */
 	@Override
 	public void onReveal() {
 		super.onReveal();
@@ -72,21 +95,30 @@ public abstract class AbstractFormPresenter<//
 
 	@Override
 	public void save(F data) {
+		// Recover the validator
 		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+		// Validate data
 		Set<ConstraintViolation<F>> violations = validator.validate(data, Default.class);
+		// If any constraints detected
 		if (!violations.isEmpty()) {
 			getView().setConstraintsViolations(new ArrayList<ConstraintViolation<?>>(violations));
 		} else {
+			// Make server call
 			saveAction(data);
 		}
 	}
 
+	// In case of success :
+	// Show notification label
+	// Hide the spinner
+	// Navigate to list view
 	protected void success() {
 		getView().showNotification(true);
 		LoadingEvent.fire(AbstractFormPresenter.this, false);
 		revealPlace(getListRouteToken());
 	}
 
+	// Reset the form field
 	@Override
 	public void reset() {
 		load();

@@ -31,10 +31,15 @@ import ${ROOT_PKG}.shared.api.resources.${entity.name}Resource;
 import ${ROOT_PKG}.shared.dto.${entity.name}Dto;
 
 public class ${entity.name}ListPresenter extends AbstractListPresenter<${entity.name}ListProxy, ${entity.name}ListView, ${entity.name}Dto, ${entity.name}Resource> {
-
+	// Define contract with the associated view
 	public interface ${entity.name}ListView extends ListView<${entity.name}ListPresenter, ${entity.name}Dto> {
 	}
 
+	/**
+	 * Proxy declaration, define an accessible place of the application.
+	 * @see NameToken for more information about place definition
+	 * @see ProxyPlace for more information about place definition
+	 */
 	@ProxyStandard
 	@NameToken(NameTokens.${listRootName})
 	public interface ${entity.name}ListProxy extends ProxyPlace<${entity.name}ListPresenter> {
@@ -57,10 +62,10 @@ public class ${entity.name}ListPresenter extends AbstractListPresenter<${entity.
 #foreach( $field in ${entity.keyAttributes} )
 #if( $field.isKeyElement())
 #set( $upperCaseFkName = $fn.toUpperCase($field.name))
-	#set($createClickReveal="${createClickReveal}TokenParameters.${upperCaseFkName}, TokenParameters.DEFAULT_ID") 
-	#if($foreach.index != ${entity.keyAttributesCount}- 1)
-		#set($createClickReveal="${createClickReveal}, ") 
-	#end
+#set($createClickReveal="${createClickReveal}TokenParameters.${upperCaseFkName}, TokenParameters.DEFAULT_ID") 
+#if($foreach.index != ${entity.keyAttributesCount}- 1)
+#set($createClickReveal="${createClickReveal}, ") 
+#end
 #end
 #end
 		revealPlace(getFormRouteToken(), ${createClickReveal});
@@ -85,10 +90,10 @@ public class ${entity.name}ListPresenter extends AbstractListPresenter<${entity.
 #if( $field.isKeyElement())
 #set( $upperCaseFkName = $fn.toUpperCase($field.name))
 #set( $capitalizedFieldName = $fn.capitalize($field.name))
-	#set($restCallparams="${restCallparams}data.get${capitalizedFieldName}()") 
-	#if($foreach.index != ${entity.keyAttributesCount}- 1)
-		#set($restCallparams="${restCallparams}, ") 
-	#end
+#set($restCallparams="${restCallparams}data.get${capitalizedFieldName}()") 
+#if($foreach.index != ${entity.keyAttributesCount}- 1)
+#set($restCallparams="${restCallparams}, ") 
+#end
 #end
 #end
 		LoadingEvent.fire(this, true);
@@ -108,16 +113,15 @@ public class ${entity.name}ListPresenter extends AbstractListPresenter<${entity.
 #set( $capitalizedFieldName = $fn.capitalize($field.name))
 #set( $upperCaseFkName = $fn.toUpperCase($field.name))
 #if($field.isStringType())
-	#set($updateClickReveal="${updateClickReveal}TokenParameters.${upperCaseFkName}, data.get${capitalizedFieldName}()") 
-	#else
-		#set($updateClickReveal="${updateClickReveal}TokenParameters.${upperCaseFkName}, java.lang.String.valueOf(data.get${capitalizedFieldName}())") 
-	#end
-	#if($foreach.index != ${entity.keyAttributesCount}- 1)
-		#set($updateClickReveal="${updateClickReveal}, ") 
-	#end
+#set($updateClickReveal="${updateClickReveal}TokenParameters.${upperCaseFkName}, data.get${capitalizedFieldName}()") 
+#else
+#set($updateClickReveal="${updateClickReveal}TokenParameters.${upperCaseFkName}, java.lang.String.valueOf(data.get${capitalizedFieldName}())") 
+#end
+#if($foreach.index != ${entity.keyAttributesCount}- 1)
+#set($updateClickReveal="${updateClickReveal}, ") 
+#end
 #end
 #end
 		revealPlace(getFormRouteToken(), ${updateClickReveal});
 	}
-
 }

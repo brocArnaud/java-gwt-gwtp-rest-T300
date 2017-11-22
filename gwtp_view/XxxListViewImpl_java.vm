@@ -38,7 +38,6 @@ public class ${entity.name}ListViewImpl extends AbstractListView<${entity.name}L
 #foreach( $field in ${entity.attributes} )
 #set( $capitalizedFieldName = $fn.capitalize(${field.name}))
 		final TextColumn<${entity.name}Dto> col${capitalizedFieldName} = new TextColumn<${entity.name}Dto>() {
-
 			@Override
 			public String getValue(final ${entity.name}Dto object) {
 				return String.valueOf(object.get${capitalizedFieldName}());

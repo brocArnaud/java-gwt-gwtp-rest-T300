@@ -8,7 +8,15 @@ import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
 
+/**
+ * Loading event definition.
+ * This event is used for show/hide the loading spinner on HeaderPresenter.
+ * Fire event for show the spinner (for example before a server call) : LoadingEvent.fire(this, true);
+ * Fire event for hide the spinner (for example after a server call) : LoadingEvent.fire(this, false);
+ * @author Telosys ( http://www.telosys.org/ )
+ */
 public class LoadingEvent extends GwtEvent<LoadingEvent.LoadingHandler> {
+	// Event handler for LoadingEvent
 	public interface LoadingHandler extends EventHandler {
 		void onLoadingEvent(LoadingEvent event);
 	}

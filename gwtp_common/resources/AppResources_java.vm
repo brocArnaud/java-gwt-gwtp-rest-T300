@@ -8,6 +8,11 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 
+/**
+ * Resources definition.
+ * @see CssResource
+ * @see ImageResource
+ */
 public interface AppResources extends ClientBundle {
 	interface Normalize extends CssResource {
 	}

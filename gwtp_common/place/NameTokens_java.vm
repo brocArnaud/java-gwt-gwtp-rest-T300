@@ -15,12 +15,14 @@ public class NameTokens {
 	public static final String HOME = "/";
 	public static final String ERROR = "/error";
 
+## For each entity we generate both Form route and List route
 #foreach( $entity in $selectedEntities )
 #set( $upperCaseEntityName = $fn.toUpperCase($entity.name))
 #set( $uncapitalizedEntityName = $fn.uncapitalize($entity.name) )
 #set( $listRootName = "${upperCaseEntityName}_LIST" )
 #set( $formRootName = "${upperCaseEntityName}_FORM" )
 	// ---------- Route for entity "$entity.name"
+## Resolve the key part of the url following primary key
 #set( $keyPart = "")
 #foreach( $field in ${entity.attributes} )
 #if( $field.isKeyElement())

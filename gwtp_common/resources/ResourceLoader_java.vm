@@ -6,6 +6,9 @@ package ${target.javaPackageFromFolder(${SRC})};
 
 import javax.inject.Inject;
 
+/**
+ * Utility class. Ensure ressource are correctly injected.
+ */
 public class ResourceLoader {
     @Inject
     ResourceLoader(AppResources appResources) {

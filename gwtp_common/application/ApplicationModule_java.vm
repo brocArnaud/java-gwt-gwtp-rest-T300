@@ -6,12 +6,9 @@ package ${target.javaPackageFromFolder(${SRC})};
 
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 
-## This part resolve the import part for the entity.
-## This resolve camel case. For example with BookOrder entity : $resolvedImportPart will be "book.order"
+## Import generated for each entity.
 #foreach( $entity in $selectedEntities )
-#set( $uncapitalizedEntityName = $fn.uncapitalize($entity.name))
-#set( $lowerCaseEntityName =$uncapitalizedEntityName.toLowerCase())
-
+#set( $lowerCaseEntityName = $entity.name.toLowerCase())
 import ${ROOT_PKG}.client.application.content.${lowerCaseEntityName}.form.${entity.name}FormPresenter;
 import ${ROOT_PKG}.client.application.content.${lowerCaseEntityName}.form.${entity.name}FormPresenter.${entity.name}FormProxy;
 import ${ROOT_PKG}.client.application.content.${lowerCaseEntityName}.form.${entity.name}FormPresenter.${entity.name}FormView;
@@ -21,7 +18,7 @@ import ${ROOT_PKG}.client.application.content.${lowerCaseEntityName}.list.${enti
 import ${ROOT_PKG}.client.application.content.${lowerCaseEntityName}.list.${entity.name}ListPresenter.${entity.name}ListView;
 import ${ROOT_PKG}.client.application.content.${lowerCaseEntityName}.list.${entity.name}ListViewImpl;
 #end
-
+## Import added one time
 import ${ROOT_PKG}.client.application.content.error.ErrorPresenter;
 import ${ROOT_PKG}.client.application.content.error.ErrorPresenter.ErrorProxy;
 import ${ROOT_PKG}.client.application.content.error.ErrorPresenter.ErrorView;
@@ -39,6 +36,12 @@ import ${ROOT_PKG}.client.application.layout.header.HeaderPresenter.HeaderProxy;
 import ${ROOT_PKG}.client.application.layout.header.HeaderPresenter.HeaderView;
 import ${ROOT_PKG}.client.application.layout.header.HeaderViewImpl;
 
+/**
+ * Top level module.
+ * On this class we realize the Gin binding for all our couple of Presenter/view.
+ * @see AbstractPresenterModule
+ * @author Telosys ( http://www.telosys.org/ )
+ */
 public class ApplicationModule extends AbstractPresenterModule {
 
 	@Override
@@ -53,10 +56,9 @@ public class ApplicationModule extends AbstractPresenterModule {
 		bindPresenter(ErrorPresenter.class, ErrorView.class, ErrorViewImpl.class, ErrorProxy.class);
 
 #foreach( $entity in $selectedEntities )
-		/** Presenter binding for ${entity.name}*/
+		/** Gin binding for ${entity.name}*/
 		bindPresenter(${entity.name}ListPresenter.class, ${entity.name}ListView.class, ${entity.name}ListViewImpl.class, ${entity.name}ListProxy.class);
 		bindPresenter(${entity.name}FormPresenter.class, ${entity.name}FormView.class, ${entity.name}FormViewImpl.class, ${entity.name}FormProxy.class);
-
 #end
 
 		bindPresenter(ApplicationPresenter.class, ApplicationPresenter.MyView.class, ApplicationView.class, ApplicationPresenter.MyProxy.class);

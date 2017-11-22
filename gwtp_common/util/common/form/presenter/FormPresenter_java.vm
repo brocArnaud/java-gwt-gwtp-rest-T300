@@ -4,6 +4,10 @@
  */
 package ${target.javaPackageFromFolder(${SRC})};
 
+/**
+ * Define contract for form presenter.
+ * @param <F> the entity dto associated with this presenter
+ */
 public interface FormPresenter<F> {
 
 	public void save(F data);

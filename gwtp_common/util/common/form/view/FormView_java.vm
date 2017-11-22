@@ -8,6 +8,11 @@ import javax.validation.ConstraintViolation;
 
 import ${ROOT_PKG}.client.util.common.SimpleView;
 
+/**
+ * Define contract for form view.
+ * @param <P> the associated presenter
+ * @param <F> the entity dto associated with this presenter
+ */
 public interface FormView<P, F> extends SimpleView<P> {
 	void showNotification(boolean visible);
 

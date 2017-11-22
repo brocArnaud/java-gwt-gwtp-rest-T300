@@ -14,16 +14,13 @@ public class TokenParameters {
 	
 	public static final String DEFAULT_ID = "new";
 
+## Resolve all possible url parameter following entity primary key - prevent duplicate with '$resolvedTokenParameters'
 #set($resolvedTokenParameters=[]) 
 #foreach( $entity in $selectedEntities )
-#set( $uncapitalizedEntityName = $fn.uncapitalize($entity.name) )
-#set( $keyPart = "")
 #foreach( $field in ${entity.attributes} )
 #if( $field.isKeyElement() && !$resolvedTokenParameters.contains($field.name))
-#set( $upperCaseFkName = $fn.toUpperCase($field.name))
-#set( $uncapitalizedFieldName = $fn.uncapitalize($field.name))
-#set( $keyPart = "${keyPart}/{${uncapitalizedFieldName}}")
-	public static final String ${upperCaseFkName} = "${uncapitalizedFieldName}";
+#set( $upperCaseFkName = $field.name.toUpperCase())
+	public static final String ${upperCaseFkName} = "$field.name";
 #set($temp=$resolvedTokenParameters.add($field.name))
 #end
 #end

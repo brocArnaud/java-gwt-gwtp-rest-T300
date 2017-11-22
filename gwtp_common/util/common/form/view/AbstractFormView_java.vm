@@ -30,27 +30,35 @@ import ${ROOT_PKG}.shared.dto.common.ListItemDto;
 
 import de.knightsoftnet.validators.client.editor.BeanValidationEditorDriver;
 
-public abstract class AbstractFormView<P extends FormPresenter<F>, F> extends ViewImpl implements FormView<P, F>, Editor<F> {
+/**
+ * Abstract class wich contains commons stuff for all form view implemntation.
+ * @param <P> the presenter associated with this view
+ * @param <F> the entity dto associated with this presenter
+ */
+public abstract class AbstractFormView<//
+		P extends FormPresenter<F>,//
+		F> //
+		extends ViewImpl //
+		implements FormView<P, F>, Editor<F> {
 
 	protected P presenter;
 
+	// Declare the form driver (will assure automation in data transfer : form field <==> dto
 	protected final BeanValidationEditorDriver<F, AbstractFormView<P, F>> driver;
 
+	// Common graphics element @Ignore for prevent driver to search for them inside the dto
 	@Ignore
 	@UiField
 	public PanelBody body;
-
 	@Ignore
 	@UiField
 	public Button create;
-
 	@Ignore
 	@UiField
 	public Column notification;
 	@Ignore
 	@UiField
 	public Label labelNotification;
-
 	@Ignore
 	@UiField
 	public Column notificationError;
@@ -58,6 +66,10 @@ public abstract class AbstractFormView<P extends FormPresenter<F>, F> extends Vi
 	@UiField
 	public Label labelNotificationError;
 
+	/**
+	 * Standard constructor.
+	 * @param pdriver the bean validation driver associated to this form.
+	 */
 	@SuppressWarnings("unchecked")
 	public AbstractFormView(final BeanValidationEditorDriver<F, ? extends AbstractFormView<P, F>> pdriver) {
 		super();
@@ -113,6 +125,7 @@ public abstract class AbstractFormView<P extends FormPresenter<F>, F> extends Vi
 		notificationError.setVisible(visible);
 	}
 
+	// Utility method used for create a ValueListBox widget based on ListItemDto
 	@Ignore
 	protected ValueListBox<ListItemDto> initListItemBox() {
 		return new ValueListBox<>(new AbstractRenderer<ListItemDto>() {
@@ -129,10 +142,12 @@ public abstract class AbstractFormView<P extends FormPresenter<F>, F> extends Vi
 		});
 	}
 
+	// Utility method used for format a date 
 	protected String formatDate(Date date) {
 		return DateTimeFormat.getFormat(PredefinedFormat.DATE_SHORT).format(date);
 	}
 
+	// Utility method for initialize a date picker
 	protected void initDatePicker(DatePicker datePicker) {
 		datePicker.setGWTFormat(LocaleInfo.getCurrentLocale().getDateTimeFormatInfo().dateFormatShort());
 	}
