@@ -1,4 +1,5 @@
 #parse("include/java_header_SRC.vm")
+#parse("include/velocimacros.vm")
 
 /**
  * Utility class used for store the route corresponding to proxy place.
@@ -22,6 +23,6 @@ public class NameTokens {
 ## Use macro for feed $pkPath variable
 #pkPath($entity true)
 	public static final String ${listRootName} = "/${uncapitalizedEntityName}";
-	public static final String ${formRootName} = "/${uncapitalizedEntityName}${pkPath}";
+	public static final String ${formRootName} = "/${uncapitalizedEntityName}/${pkPath}";
 #end
 }
